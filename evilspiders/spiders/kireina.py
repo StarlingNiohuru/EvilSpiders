@@ -3,7 +3,7 @@ import scrapy
 from evilspiders.items import KireinaItem
 
 class KireinaSpider(scrapy.Spider):
-    name = "Kireina"
+    name = "kireina"
     allowed_domains = ["http://kireina-megami.blog.jp"]
     start_urls = (
         'http://kireina-megami.blog.jp/archives/54453388.html',
