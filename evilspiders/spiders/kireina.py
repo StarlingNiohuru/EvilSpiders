@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from EvilSpiders.items import KireinaItem
+from evilspiders.items import KireinaItem
 
 class KireinaSpider(scrapy.Spider):
     name = "Kireina"
