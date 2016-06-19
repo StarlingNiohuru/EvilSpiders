@@ -16,7 +16,12 @@ class ImagePipeline(object):
             os.mkdir(self.path)
 
     def process_item(self, item, spider):
-        fname = self.path+item['name']+'.jpg'
+        fname = self.path+'/'+item['title']+'/'+item['name']+'.jpg'
+
+        fpath = '/home/starling/testpath/'+item['title']+'/'
+        if not os.path.exists(fpath):
+            os.mkdir(fpath)
+
         with open(fname,'wb') as fw:
             res = urllib2.urlopen(item['image_url'])
             fw.write(res.read())
