@@ -8,13 +8,13 @@ class KireinaSpider(scrapy.Spider):
                        #"http://blog.livedoor.jp",
     ]
     start_urls = (
-        'http://kireina-megami.blog.jp/archives/52219528.html',
+       # 'http://kireina-megami.blog.jp/archives/52219528.html',
     )
 
     def parse(self, response):
-        title = response.xpath('//h1[@class="article-title"]//a/text()').extract()[0]
+        sel = response.xpath('//h1[@class="article-title"]//a/text()')[0]
+        title = sel.root
         page_tag = '-'+title.split('-')[1]+'-'
-        
 
         for sel in response.xpath('//div[@class="article-body"]/div[@align="center"]/a'):
             item = KireinaItem()
@@ -25,6 +25,7 @@ class KireinaSpider(scrapy.Spider):
 
         next_node=response.xpath('//div[@class="article-body-inner"]/b[text()="%s"]/following-sibling::a[1]'%page_tag)
         if next_node:
-            next_url = next_node[0].xpath('@href').extract()[0]
+            sel = next_node[0].xpath('@href')[0]
+            next_url = sel.root
 
         yield scrapy.Request(next_url,callback=self.parse,dont_filter=True)
