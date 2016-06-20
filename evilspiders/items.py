@@ -10,6 +10,7 @@ import scrapy
 
 class KireinaItem(scrapy.Item):
     # define the fields for your item here like:
+    title = scrapy.Field()
     name = scrapy.Field()
     image_url = scrapy.Field()
     #pass
