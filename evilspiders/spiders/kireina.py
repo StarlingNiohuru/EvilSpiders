@@ -8,26 +8,23 @@ class KireinaSpider(scrapy.Spider):
                        #"http://blog.livedoor.jp",
     ]
     start_urls = (
-        'http://kireina-megami.blog.jp/archives/54386797.html',
+        'http://kireina-megami.blog.jp/archives/52219528.html',
     )
 
     def parse(self, response):
         title = response.xpath('//h1[@class="article-title"]//a/text()').extract()[0]
-        page_num = title.split('-')[1]
+        page_tag = '-'+title.split('-')[1]+'-'
+        
 
-        for sel in response.xpath('//div[@align="center"]/a'):
+        for sel in response.xpath('//div[@class="article-body"]/div[@align="center"]/a'):
             item = KireinaItem()
             item['title'] = title
             item['name'] = sel.xpath('@title').extract()[0]
             item['image_url'] = sel.xpath('@href').extract()[0]
             yield item
 
-        for sel in response.xpath('//div[@class="article-body-inner"]/a'):
-            url=sel.xpath('@href').extract()[0]
-            if 'cat' in url:
-                continue 
-            num=sel.xpath('b/text()').extract()[0][1:-1]
-            if int(page_num)+1==int(num):
-                next_url = 'http://kireina-megami.blog.jp/archives/'+url.split('/')[-1]
-                break
+        next_node=response.xpath('//div[@class="article-body-inner"]/b[text()="%s"]/following-sibling::a[1]'%page_tag)
+        if next_node:
+            next_url = next_node[0].xpath('@href').extract()[0]
+
         yield scrapy.Request(next_url,callback=self.parse,dont_filter=True)

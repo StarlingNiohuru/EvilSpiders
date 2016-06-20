@@ -11,16 +11,19 @@ import os
 class ImagePipeline(object):
 
     def __init__(self):
-        self.path = '/home/starling/testpath/'
+        self.path = '/home/starling/kireina/'
         if not os.path.exists(self.path):
             os.mkdir(self.path)
 
     def process_item(self, item, spider):
-        fname = self.path+'/'+item['title']+'/'+item['name']+'.jpg'
-
-        fpath = '/home/starling/testpath/'+item['title']+'/'
-        if not os.path.exists(fpath):
-            os.mkdir(fpath)
+        actress = item['title'].split('-')[0]
+        fname = self.path+actress+'/'+item['title']+'/'+item['name']+'.jpg'
+        fpath1 = self.path+actress+'/'
+        fpath2 = fpath1+item['title']+'/'
+        if not os.path.exists(fpath1):
+            os.mkdir(fpath1)
+        if not os.path.exists(fpath2):
+            os.mkdir(fpath2)
 
         with open(fname,'wb') as fw:
             res = urllib2.urlopen(item['image_url'])
