@@ -27,5 +27,7 @@ class KireinaSpider(scrapy.Spider):
         if next_node:
             sel = next_node[0].xpath('@href')[0]
             next_url = sel.root
+        else:
+            return
 
         yield scrapy.Request(next_url,callback=self.parse,dont_filter=True)

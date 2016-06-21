@@ -1,4 +1,5 @@
 import sys
+import os
 import tarfile
 from scrapy.crawler import CrawlerProcess
 from evilspiders.spiders.kireina import KireinaSpider
@@ -10,8 +11,9 @@ def run(url):
     process.start()
 
 def tarpath(rpath='/home/starling/'):
+    os.chdir(rpath)
     tf=tarfile.open('%skireina.tar'%rpath,'w')
-    tf.add('%skireina/'rpath)
+    tf.add('kireina/')
     tf.close()
 
 if __name__=='__main__':
