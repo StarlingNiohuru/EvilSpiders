@@ -14,3 +14,13 @@ class KireinaItem(scrapy.Item):
     name = scrapy.Field()
     image_url = scrapy.Field()
     #pass
+
+class DMMItem(scrapy.Item):
+    hinban = scrapy.Field()
+    title = scrapy.Field()
+    performer = scrapy.Field()
+    date = scrapy.Field()
+    series = scrapy.Field()
+    maker = scrapy.Field()
+    label = scrapy.Field()
+    image_url = scrapy.Field()
