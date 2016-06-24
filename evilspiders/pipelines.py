@@ -7,6 +7,7 @@
 
 import urllib2
 import os
+import pymongo
 
 class ImagePipeline(object):
 
@@ -30,3 +31,19 @@ class ImagePipeline(object):
             fw.write(res.read())
             fw.close()
         return item
+
+class MongoPipeline(object):
+
+    def __init__(self):
+        connection = pymongo.Connection(settings['MONGODB_HOST'], settings['MONGODB_PORT'])
+        db = connection[settings['MONGODB_DATABASE']]
+        self.collection = db[settings['MONGODB_COLLECTION']]
+
+    def process_item(self, item, spider):
+	self.collection.insert(dict(item))
+	log.msg("Item wrote to MongoDB database {}, collection {}, at host {}, port {}".format(
+	    settings['MONGODB_DATABASE'],
+	    settings['MONGODB_COLLECTION'],
+	    settings['MONGODB_HOST'],
+	    settings['MONGODB_PORT']))
+	return item
