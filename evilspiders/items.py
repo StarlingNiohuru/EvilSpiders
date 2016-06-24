@@ -18,8 +18,9 @@ class KireinaItem(scrapy.Item):
 class DMMItem(scrapy.Item):
     hinban = scrapy.Field()
     title = scrapy.Field()
-    performer = scrapy.Field()
+    actress = scrapy.Field()
     date = scrapy.Field()
+    director = scrapy.Field()
     series = scrapy.Field()
     maker = scrapy.Field()
     label = scrapy.Field()
