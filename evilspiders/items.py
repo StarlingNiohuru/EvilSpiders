@@ -25,3 +25,4 @@ class DMMItem(scrapy.Item):
     maker = scrapy.Field()
     label = scrapy.Field()
     image_url = scrapy.Field()
+    page_url = scrapy.Field()

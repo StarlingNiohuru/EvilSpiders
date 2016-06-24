@@ -10,7 +10,11 @@ class KireinaSpider(scrapy.Spider):
     start_urls = (
        # 'http://kireina-megami.blog.jp/archives/52219528.html',
     )
-
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'evilspiders.pipelines.ImagePipeline': 300,
+    }
+    }
     def parse(self, response):
         sel = response.xpath('//h1[@class="article-title"]//a/text()')[0]
         title = sel.root
