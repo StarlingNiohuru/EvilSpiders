@@ -35,8 +35,8 @@ class ImagePipeline(object):
 class MongoPipeline(object):
 
     def __init__(self):
-        connection = pymongo.Connection(settings['MONGODB_HOST'], settings['MONGODB_PORT'])
-        db = connection[settings['MONGODB_DATABASE']]
+        client = pymongo.MongoClient(settings['MONGODB_HOST'], settings['MONGODB_PORT'])
+        db = client[settings['MONGODB_DATABASE']]
         self.collection = db[settings['MONGODB_COLLECTION']]
 
     def process_item(self, item, spider):

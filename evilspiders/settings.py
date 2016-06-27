@@ -68,6 +68,13 @@ ITEM_PIPELINES = {
 #    'evilspiders.pipelines.ImagePipeline': 300,
 }
 
+MONGODB_HOST = 'localhost'
+MONGODB_PORT = 27017
+MONGODB_DATABASE = "evilspiders"
+MONGODB_COLLECTION = "DMM"
+MONGODB_USERNAME = ""
+MONGODB_PASSWORD = ""
+
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
