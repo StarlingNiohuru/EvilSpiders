@@ -8,6 +8,8 @@
 import urllib2
 import os
 import pymongo
+from scrapy.crawler import CrawlerRunner
+from scrapy.utils.project import get_project_settings
 
 class ImagePipeline(object):
 
@@ -35,15 +37,16 @@ class ImagePipeline(object):
 class MongoPipeline(object):
 
     def __init__(self):
-        client = pymongo.MongoClient(settings['MONGODB_HOST'], settings['MONGODB_PORT'])
-        db = client[settings['MONGODB_DATABASE']]
-        self.collection = db[settings['MONGODB_COLLECTION']]
+        cr = CrawlerRunner(get_project_settings())
+        client = pymongo.MongoClient(cr.settings['MONGODB_HOST'], cr.settings['MONGODB_PORT'])
+        db = client[cr.settings['MONGODB_DATABASE']]
+        self.collection = db[cr.settings['MONGODB_COLLECTION']]
 
     def process_item(self, item, spider):
-	self.collection.insert(dict(item))
+	self.collection.insert_one(dict(item))
 	log.msg("Item wrote to MongoDB database {}, collection {}, at host {}, port {}".format(
-	    settings['MONGODB_DATABASE'],
-	    settings['MONGODB_COLLECTION'],
-	    settings['MONGODB_HOST'],
-	    settings['MONGODB_PORT']))
+	    cr.settings['MONGODB_DATABASE'],
+	    cr.settings['MONGODB_COLLECTION'],
+	    cr.settings['MONGODB_HOST'],
+	    cr.settings['MONGODB_PORT']))
 	return item
