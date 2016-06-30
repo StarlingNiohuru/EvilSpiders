@@ -8,12 +8,19 @@ class DmmSpider(scrapy.Spider):
     start_urls = (
         #'http://www.www.dmm.co.jp/',
         #'http://www.dmm.co.jp/mono/dvd/-/detail/=/cid=1star656/',
+        #'/home/starling/1star658.html',
     )
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'evilspiders.pipelines.MongoPipeline': 400,
+    }
+    }
 
     def __init__(self, hinbans=[]):
         if hinbans:
             self.start_urls = ['http://www.dmm.co.jp/mono/dvd/-/detail/=/cid=%s/'%x for x in hinbans.split(',')]
-
+        else:
+            self.start_urls = ['file:/home/starling/1star658.html']
     def parse(self, response):
         item = DMMItem()
         item['title'] = response.xpath('//h1[@id="title"]/text()').extract()[0]
