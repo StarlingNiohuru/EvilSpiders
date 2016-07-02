@@ -20,7 +20,7 @@ class DmmSpider(scrapy.Spider):
         if hinbans:
             self.start_urls = ['http://www.dmm.co.jp/mono/dvd/-/detail/=/cid=%s/'%x for x in hinbans.split(',')]
         else:
-            self.start_urls = ['file:/home/starling/1star658.html']
+            self.start_urls = ['file:/home/starling/test.html']
     def parse(self, response):
         item = DMMItem()
         item['title'] = response.xpath('//h1[@id="title"]/text()').extract()[0]

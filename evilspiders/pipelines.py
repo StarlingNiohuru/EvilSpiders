@@ -8,7 +8,6 @@
 import urllib2
 import os
 import pymongo
-from scrapy import log
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
 
@@ -45,10 +44,6 @@ class MongoPipeline(object):
         self.collection.create_index("hinban",unique=True)
 
     def process_item(self, item, spider):
-	self.collection.insert_one(dict(item))
-	#log.msg("Item wrote to MongoDB database {}, collection {}, at host {}, port {}".format(
-	#    cr.settings['MONGODB_DATABASE'],
-	#    cr.settings['MONGODB_COLLECTION'],
-	#    cr.settings['MONGODB_HOST'],
-	#    cr.settings['MONGODB_PORT']))
+        dmap = dict(item)
+	self.collection.replace_one({"hinban":dmap['hinban']},dmap,True)
 	return item
