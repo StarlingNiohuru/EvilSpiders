@@ -28,7 +28,7 @@ class DmmSpider(scrapy.Spider):
         slist = response.xpath('//table[@class="mg-b20"]//tr/td[2]')
         item['date'] = slist[1].xpath('text()')[0].root
         item['runtime'] = slist[2].xpath('text()')[0].root
-        item['hinban'] = slist[9].xpath('text()')[0].root
+        #item['hinban'] = slist[9].xpath('text()')[0].root
         item['director'] = slist[4].xpath('node()/text()').extract()
         item['series'] = slist[5].xpath('a/text()') and slist[5].xpath('a/text()')[0].root or slist[5].xpath('text()')[0].root
         item['maker'] = slist[6].xpath('a/text()') and slist[6].xpath('a/text()')[0].root or slist[6].xpath('text()')[0].root
@@ -36,4 +36,5 @@ class DmmSpider(scrapy.Spider):
         item['actress'] = slist[3].xpath('span/node()/text()').extract()
         item['keyword'] = slist[8].xpath('a/text()').extract()
         item['image_url'] = response.xpath('//div[@id="sample-video"]//a[@name="package-image"]/@href')[0].extract()
+        item['hinban'] = response.url.split('=')[-1].split('/')[0]
         yield item
