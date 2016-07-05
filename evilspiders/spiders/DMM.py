@@ -10,18 +10,35 @@ class DmmSpider(scrapy.Spider):
         #'http://www.dmm.co.jp/mono/dvd/-/detail/=/cid=1star656/',
         #'/home/starling/1star658.html',
     )
+    handle_httpstatus_list = [200,404]
     custom_settings = {
         'ITEM_PIPELINES': {
             'evilspiders.pipelines.MongoPipeline': 400,
-    }
+    },
+    #    'SPIDER_MIDDLEWARES': {
+    #        'evilspiders.middlewares.DMM404SpiderMiddleware': 30,
+    #}
     }
 
-    def __init__(self, hinbans=[]):
+    def __init__(self, hinbans=None, hbfile=None):
+        #self.handle_httpstatus_list.append(404)
         if hinbans:
+            hbfile = None
             self.start_urls = ['http://www.dmm.co.jp/mono/dvd/-/detail/=/cid=%s/'%x for x in hinbans.split(',')]
+        elif hbfile:
+            hblist = [x.strip() for x in open(hbfile,'r').readlines()]
+            self.start_urls = ['http://www.dmm.co.jp/mono/dvd/-/detail/=/cid=%s/'%x for x in hblist]
         else:
             self.start_urls = ['file:/home/starling/test.html']
+        self.page404fpath = '/home/starling/DMM404list.txt'
+
     def parse(self, response):
+        if response.status==404:
+            with open(self.page404fpath,'a') as f:
+                wronghinban = response.url.split('=')[-1].split('/')[0]
+                f.write(wronghinban+'\n')
+            return 
+
         item = DMMItem()
         item['title'] = response.xpath('//h1[@id="title"]/text()').extract()[0]
         item['page_url'] = response.url
